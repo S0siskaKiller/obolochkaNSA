@@ -18,6 +18,7 @@ import getpass
     "удл": "rm",
     "прм": "mv", 
     "календарь": "cal",
+    "воиспроизвести": "mpv"
 }
 
 while True:
