@@ -1,5 +1,7 @@
 import os
 import getpass
+import readline
+import rlcompleter
 
 команды = {
     "ред": "vim",
@@ -16,16 +18,39 @@ import getpass
     "см": "cat",
     "трк": "pwd",
     "удл": "rm",
-    "прм": "mv", 
+    "прм": "mv",
     "календарь": "cal",
     "воиспроизвести": "mpv"
 }
 
+command_list = list(команды.keys()) + ["выход", "сд"] 
+
+
+def completer(text, state):
+    """Функция для автодополнения."""
+    options = [x for x in command_list if x.startswith(text)]
+    if state < len(options):
+        return options[state]
+    else:
+        return None
+
+
+readline.set_completer(completer)
+readline.parse_and_bind("tab: complete")
+
 while True:
     пользователь = getpass.getuser()
     cwd2 = os.getcwd()
-    строка = f"{пользователь}@{cwd2}> " 
-    вса = input(строка)
+    строка = f"{пользователь}@{cwd2}> "
+    try:
+        вса = input(строка)
+    except EOFError:
+        print("\nExiting...")
+        break
+    except KeyboardInterrupt:
+        print("\nInterrupting...")
+        continue
+
     parts = вса.split()
     command = parts[0]
     argument = ""
@@ -35,10 +60,9 @@ while True:
 
     if command == "выход":
         exit()
-    elif command == "сд":  
+    elif command == "сд":
         try:
             os.chdir(argument)
-            print(f"Текущая директория: {os.getcwd()}")  
         except FileNotFoundError:
             print(f"Директория '{argument}' не найдена.")
         except NotADirectoryError:
@@ -49,7 +73,7 @@ while True:
         command_to_execute = команды[command]
         full_command = command_to_execute
         if argument:
-            full_command = f'{command_to_execute} {argument}' 
+            full_command = f'{command_to_execute} {argument}'
         os.system(full_command)
     else:
         print("Неизвестная команда")
