@@ -13,7 +13,7 @@ build:
 
 install: build
 	sudo mkdir -p $(INSTALL_DIR) 
-	sudo cp dist/Xamper /usr/local/bin/nsa
+	sudo cp dist/nsa /usr/local/bin/nsa
 	sudo chmod +x $(INSTALL_DIR)/$(EXECUTABLE)
 	@echo "Installed $(EXECUTABLE) to $(INSTALL_DIR)"
 
