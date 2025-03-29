@@ -1,5 +1,7 @@
 import os
 import getpass
+import termcolor
+from termcolor import *
 import readline
 import subprocess
 import rlcompleter
@@ -16,6 +18,26 @@ def save_config(config):
     with open(CONFIG_FILE, "w") as configfile:
         config.write(configfile)
 
+def help1():
+    cprint("Доступные команды:", "light_green")
+    cprint("ред - редактировать файл при помощи vim", "green")
+    cprint("калькулятор - bc", "green")
+    cprint("часы - date", "green")
+    cprint("кат - ls", "green")
+    cprint("календарь", "green")
+    cprint("созкат - создать каталог", "green")
+    cprint("написать - вывести текст на экран", "green")
+    cprint("трк - текущий рабочий каталог", "green")
+    cprint("см - cat", "green")
+    cprint("сд - сменить директорию", "green")
+    cprint("прм - переместить файл/каталог", "green")
+    cprint("удл - удалить файл/каталог", "green")
+    cprint("установить - установить указанный пакет", "green")
+    cprint("удалить - удалить указанный пакет", "green")
+    cprint("обновить - установка обновлений", "green")
+    cprint("воиспроизвести - воиспроизвести видео при помощи mpv (планируется переработка этой функции)", "green")
+    cprint("помощь - вызвать помощь", "green")
+    cprint("выход - выйти из оболочки", "green")
 def PMinstall(package_name,distro):
     if distro == "Debian":
         subprocess.run(["sudo", "apt", "install", package_name])
@@ -126,7 +148,6 @@ def PMupdate_all(distro):
     "календарь": "cal",
     "воиспроизвести": "mpv",
 }
-
 command_list = list(команды.keys()) + ["выход","сд","установить","удалить","обновить"] 
 
 def completer(text, state):
@@ -181,6 +202,8 @@ while True:
             print(f"'{argument}' не является директорией.")
         except OSError as e:
             print(f"Ошибка: {e}")
+    elif command == "помощь":
+        help1()
     elif command == "обновить":
         if argument:
             PMupdate(argument, distro)
