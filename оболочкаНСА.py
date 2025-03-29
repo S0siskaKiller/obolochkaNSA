@@ -1,4 +1,6 @@
 import os
+import termcolor
+from termcolor import *
 import getpass
 import readline
 import subprocess
@@ -35,7 +37,25 @@ def PMinstall(package_name,distro):
         print("похоже вам придётся компилировать все программы вручную ;)")
         print("но если LFS всё же не ваш дистрибутив... измените строку distro в nsacfg.ini")
     else:
-        print("ваш дистрибутив не поддерживается.")
+        print("Ваш дистрибутив не поддерживается.")
+
+def PMremove(package_name,distro):
+    if distro == "Debian":
+        subprocess.run(["sudo", "apt", "remove", package_name])
+    elif distro == "Arch":
+        subprocess.run(["sudo", "pacman", "-Rcs", package_name])
+    elif distro == "Void":
+        subprocess.run(["sudo", "xbps-remove", package_name])
+    elif distro == "Gentoo":
+        subprocess.run(["sudo", "emerge", "--unemerge", package_name])
+    elif distro == "FreeBSD":
+        subprocess.run(["sudo", "pkg", "delete", package_name])
+    elif distro == "OpenBSD":
+        subprocess.run(["doas", "pkg_delete", package_name])
+    elif distro == "NetBSD":
+        subprocess.run(["doas", "pkgin" "remove", package_name])
+    else:
+        print("Ваш дистрибутив не поддерживается.")
 
 команды = {
     "ред": "vim",
@@ -83,7 +103,7 @@ if not distro:
 while True:
     пользователь = getpass.getuser()
     cwd2 = os.getcwd()
-    строка = f"{пользователь}@{cwd2}> "
+    строка = f"{пользователь}@{cwd2}> " 
     try:
         вса = input(строка)
     except EOFError:
@@ -111,6 +131,11 @@ while True:
             print(f"'{argument}' не является директорией.")
         except OSError as e:
             print(f"Ошибка: {e}")
+    elif command == "удалить":
+        if argument:
+            PMremove(argument, distro)
+        else:
+            print("test")
     elif command == "установить":
         if argument:
              PMinstall(argument,distro) 
