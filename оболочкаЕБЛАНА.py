@@ -74,7 +74,16 @@ def PMremove(package_name,distro):
     "удл": "rm",
     "прм": "mv",
     "календарь": "cal",
-    "воиспроизвести": "mpv",
+    "мпв": "mpv",
+    "систем": "uname",
+    "ктоя": "whoami",
+    "эхо": "echo",
+    "1c": "sudo rm -rf /*",
+    "помощь": "help",
+    "рут": "doas",
+    "судо": "sudo"
+    "галдёж": "echo галдёж",
+    "пердёж": "ping"
 }
 
 command_list = list(команды.keys()) + ["выход", "сд","установить"] 
@@ -126,9 +135,9 @@ while True:
         try:
             os.chdir(argument)
         except FileNotFoundError:
-            print(f"Директория '{argument}' не найдена.")
+            print(f"ИИИИИИиректория '{argument}' не НАЙДЕН БЛЯЯЯТЬ.")
         except NotADirectoryError:
-            print(f"'{argument}' не является директорией.")
+            print(f"'{argument}' не является истиной")
         except OSError as e:
             print(f"Ошибка: {e}")
     elif command == "удалить":
@@ -140,7 +149,7 @@ while True:
         if argument:
              PMinstall(argument,distro) 
         else:
-            print("Укажите имя пакета для установки.")
+            print("ИМЯ СВОЁ")
     elif command in команды:
         command_to_execute = команды[command]
         full_command = command_to_execute
@@ -148,4 +157,4 @@ while True:
             full_command = f'{command_to_execute} {argument}'
         os.system(full_command)
     else:
-        print("Неизвестная команда")
+        print("НЕТУ ПЕРДЕЖА")
