@@ -1,6 +1,4 @@
 import os
-import termcolor
-from termcolor import *
 import getpass
 import readline
 import subprocess
@@ -57,6 +55,42 @@ def PMremove(package_name,distro):
     else:
         print("Ваш дистрибутив не поддерживается.")
 
+def PMupdate(package_name, distro):
+    if distro == "Debian":
+        subprocess.run(["sudo", "apt", "update", package_name])
+    elif distro == "Arch":
+        subprocess.run(["sudo", "pacman" "-Syu", package_name])
+    elif distro == "Void":
+        subprocess.run(["sudo", "xbps-install", "-Su", package_name])
+    elif distro == "Gentoo":
+        subprocess.run(["sudo", "emerge" "-avuDN", package_name])
+    elif distro == "FreeBSD":
+        subprocess.run("sudo", "pkg", "update", package_name)
+    elif distro == "OpenBSD":
+        subprocess.run(["doas", "pkg_update", "-u", package_name])
+    elif distro == "NetBSD":
+        subprocess.run(["doas", "pkgin", "update", package_name])
+    else:
+        print("ваш дистрибутив не поддерживается")
+
+def PMupdate_all(distro):
+    if distro == "Debian":
+        subprocess.run(["sudo", "apt", "update"])
+    elif distro == "Arch":
+        subprocess.run(["sudo", "pacman", "-Syu"])
+    elif distro == "Void":
+        subprocess.run(["sudo", "xbps-install", "-Su"])
+    elif distro == "Gentoo":
+        subprocess.run(["sudo" "emerge", "-avuDN", "@world"])
+    elif distro == "FreeBSD":
+        subprocess.run(["sudo", "pkg", "update"]) # не забудь потом доделать PMupdate а также добавить поддержку Fedora, OpenSUSE, Mint (и других debian based дистрибутивов)
+    elif distro == "OpenBSD":
+        subprocess.run(["doas" "pkg_update", "-u"]) 
+    elif distro == "NetBSD":
+        subprocess.run(["doas", "pkgin", "update"])
+    else:
+        print("Ваш дистрибутив не поддерживается.")
+
 команды = {
     "ред": "vim",
     "калькулятор": "bc",
@@ -77,7 +111,7 @@ def PMremove(package_name,distro):
     "воиспроизвести": "mpv",
 }
 
-command_list = list(команды.keys()) + ["выход", "сд","установить"] 
+command_list = list(команды.keys()) + ["выход","сд","установить","удалить","обновить"] 
 
 def completer(text, state):
     options = [x for x in command_list if x.startswith(text)]
@@ -131,11 +165,16 @@ while True:
             print(f"'{argument}' не является директорией.")
         except OSError as e:
             print(f"Ошибка: {e}")
+    elif command == "обновить":
+        if argument:
+            PMupdate(argument, distro)
+        else:
+            PMupdate_all(distro)
     elif command == "удалить":
         if argument:
             PMremove(argument, distro)
         else:
-            print("test")
+            print("Укажите имя пакета для удаления.")
     elif command == "установить":
         if argument:
              PMinstall(argument,distro) 
