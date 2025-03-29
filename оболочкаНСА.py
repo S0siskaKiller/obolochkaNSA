@@ -19,6 +19,10 @@ def save_config(config):
 def PMinstall(package_name,distro):
     if distro == "Debian":
         subprocess.run(["sudo", "apt", "install", package_name])
+    elif distro == "Fedora":
+        subprocess.run(["sudo", "dnf", "install", package_name])
+    elif distro == "OpenSUSE":
+        subprocess.run(["sudo", "zypper", "install", package_name])
     elif distro == "Arch":
         subprocess.run(["sudo", "pacman", "-S", package_name])
     elif distro == "Void":
@@ -40,6 +44,10 @@ def PMinstall(package_name,distro):
 def PMremove(package_name,distro):
     if distro == "Debian":
         subprocess.run(["sudo", "apt", "remove", package_name])
+    elif distro == "Fedora":
+        subprocess.run(["sudo", "dnf", "remove", package_name])
+    elif distro == "OpenSUSE":
+        subprocess.run(["sudo", "zypper", "remove", package_name])
     elif distro == "Arch":
         subprocess.run(["sudo", "pacman", "-Rcs", package_name])
     elif distro == "Void":
@@ -58,6 +66,10 @@ def PMremove(package_name,distro):
 def PMupdate(package_name, distro):
     if distro == "Debian":
         subprocess.run(["sudo", "apt", "update", package_name])
+    elif distro == "Fedora":
+        subprocess.run(["sudo", "dnf", "update", package_name])
+    elif distro == "OpenSUSE":
+        subprocess.run(["sudo", "zypper", "up", package_name])
     elif distro == "Arch":
         subprocess.run(["sudo", "pacman" "-Syu", package_name])
     elif distro == "Void":
@@ -76,6 +88,10 @@ def PMupdate(package_name, distro):
 def PMupdate_all(distro):
     if distro == "Debian":
         subprocess.run(["sudo", "apt", "update"])
+    elif distro == "Fedora":
+        subprocess.run(["sudo", "dnf", "update"])
+    elif distro == "OpenSUSE":
+        subprocess.run(["sudo", "zypper", "up"])
     elif distro == "Arch":
         subprocess.run(["sudo", "pacman", "-Syu"])
     elif distro == "Void":
@@ -83,7 +99,7 @@ def PMupdate_all(distro):
     elif distro == "Gentoo":
         subprocess.run(["sudo" "emerge", "-avuDN", "@world"])
     elif distro == "FreeBSD":
-        subprocess.run(["sudo", "pkg", "update"]) # не забудь потом доделать PMupdate а также добавить поддержку Fedora, OpenSUSE, Mint (и других debian based дистрибутивов)
+        subprocess.run(["sudo", "pkg", "update"]) 
     elif distro == "OpenBSD":
         subprocess.run(["doas" "pkg_update", "-u"]) 
     elif distro == "NetBSD":
