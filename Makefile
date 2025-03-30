@@ -25,6 +25,6 @@ run:
 	$(PYTHON) $(SCRIPT)
 
 deps:
-	pip install PyQt5 psutil pyinstaller
+	pip install alsaaudio psutil pyinstaller
 
 .PHONY: all build clean run deps install
