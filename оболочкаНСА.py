@@ -3,6 +3,7 @@ import getpass
 import termcolor
 from termcolor import *
 import readline
+import alsaaudio
 import subprocess
 import rlcompleter
 import configparser 
@@ -17,6 +18,17 @@ def load_config():
 def save_config(config):
     with open(CONFIG_FILE, "w") as configfile:
         config.write(configfile)
+
+def sound():
+    volume_str = input("Укажите нужное значение громкости звука:")
+    volume  = int(volume_str)
+    mix = alsaaudio.Mixer()
+    current_volume = mix.getvolume()[0]
+    if 0 <= volume <= 100:
+        mix.setvolume(volume)
+        cprint("Громкость была успешно изменена!", "light_green")
+    else:
+        cprint("ОШИБКА:не удалось изменить звук, возможно вы ввели неверное значение.", "red")
 
 def help1():
     cprint("Доступные команды:", "light_green")
@@ -202,6 +214,8 @@ while True:
             print(f"'{argument}' не является директорией.")
         except OSError as e:
             print(f"Ошибка: {e}")
+    elif command == "звук":
+        sound()
     elif command == "помощь":
         help1()
     elif command == "обновить":
