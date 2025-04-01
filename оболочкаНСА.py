@@ -1,4 +1,5 @@
 import os
+import sys
 import getpass
 import termcolor
 from termcolor import *
@@ -10,6 +11,8 @@ import configparser
 
 CONFIG_FILE = os.path.expanduser("nsacfg.ini")
 
+print("Добро пожаловать в оболочку NSA версии Alpha 0.0.4!")
+
 def load_config():
     config = configparser.ConfigParser()
     config.read(CONFIG_FILE)
@@ -18,6 +21,10 @@ def load_config():
 def save_config(config):
     with open(CONFIG_FILE, "w") as configfile:
         config.write(configfile)
+
+def reboot():
+        os.system("clear")
+        os.execv(sys.executable, [sys.executable] + sys.argv)
 
 def sound():
     volume_str = input("Укажите нужное значение громкости звука:")
@@ -48,8 +55,12 @@ def help1():
     cprint("удалить - удалить указанный пакет", "green")
     cprint("обновить - установка обновлений", "green")
     cprint("воиспроизвести - воиспроизвести видео при помощи mpv (планируется переработка этой функции)", "green")
+    cprint("скриншот - делает скриншот через scrot", "green")
     cprint("помощь - вызвать помощь", "green")
     cprint("выход - выйти из оболочки", "green")
+    cprint("питон - python", "green")
+    cprint("перезапуск - перезапустить скрипт", "green")
+
 def PMinstall(package_name,distro):
     if distro == "Debian":
         subprocess.run(["sudo", "apt", "install", package_name])
@@ -159,8 +170,12 @@ def PMupdate_all(distro):
     "прм": "mv",
     "календарь": "cal",
     "воиспроизвести": "mpv",
+    "питон": "python",
+    "память": "free -m",
+    "аптайм": "uptime -p",
+    "скриншот": "scrot",
 }
-command_list = list(команды.keys()) + ["выход","сд","установить","удалить","обновить"] 
+command_list = list(команды.keys()) + ["выход","сд","установить","удалить","обновить","перезапуск"] 
 
 def completer(text, state):
     options = [x for x in command_list if x.startswith(text)]
@@ -214,6 +229,8 @@ while True:
             print(f"'{argument}' не является директорией.")
         except OSError as e:
             print(f"Ошибка: {e}")
+    elif command == "перезапуск":
+        reboot()
     elif command == "звук":
         sound()
     elif command == "помощь":
