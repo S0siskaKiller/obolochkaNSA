@@ -27,15 +27,20 @@ def reboot():
         os.execv(sys.executable, [sys.executable] + sys.argv)
 
 def sound():
-    volume_str = input("Укажите нужное значение громкости звука:")
-    volume  = int(volume_str)
-    mix = alsaaudio.Mixer()
-    current_volume = mix.getvolume()[0]
-    if 0 <= volume <= 100:
-        mix.setvolume(volume)
-        cprint("Громкость была успешно изменена!", "light_green")
-    else:
-        cprint("ОШИБКА:не удалось изменить звук, возможно вы ввели неверное значение.", "red")
+    try:
+        volume_str = input("Укажите нужное значение громкости звука:")
+        volume  = int(volume_str)
+        mix = alsaaudio.Mixer()
+        current_volume = mix.getvolume()[0]
+        
+        if 0 <= volume <= 100:
+            mix.setvolume(volume)
+            cprint("Громкость была успешно изменена!", "light_green")
+        else:
+            cprint("ОШИБКА:не удалось изменить звук, возможно вы ввели неверное значение.", "red")
+
+    except KeyboardInterrupt:
+        print("Возвращаемся обратно в оболочку...")
 
 def help1():
     cprint("Доступные команды:", "light_green")
@@ -60,6 +65,7 @@ def help1():
     cprint("выход - выйти из оболочки", "green")
     cprint("питон - python", "green")
     cprint("перезапуск - перезапустить скрипт", "green")
+    cprint("подсчёт - wc", "green")
 
 def PMinstall(package_name,distro):
     if distro == "Debian":
@@ -174,6 +180,7 @@ def PMupdate_all(distro):
     "память": "free -m",
     "аптайм": "uptime -p",
     "скриншот": "scrot",
+    "подсчёт": "wc",
 }
 command_list = list(команды.keys()) + ["выход","сд","установить","удалить","обновить","перезапуск"] 
 
